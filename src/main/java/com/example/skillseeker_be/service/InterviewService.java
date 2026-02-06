@@ -8,6 +8,7 @@ import com.example.skillseeker_be.entity.InterviewQuestion;
 import com.example.skillseeker_be.exception.BadRequestException;
 import com.example.skillseeker_be.exception.NotFoundException;
 import com.example.skillseeker_be.repository.InterviewRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class InterviewService {
     private static final Long DEMO_USER_ID = 1L;
 
     private final InterviewRepository interviewRepository;
+    private final ObjectMapper objectMapper;
 
     @Transactional
     public InterviewResponse create(InterviewCreateRequest request) {
@@ -35,12 +37,24 @@ public class InterviewService {
             tension = String.valueOf(request.getAtmosphereScore());
         }
 
+        // Serialize conditionMethods to JSON
+        String conditionMethodsJson = null;
+        if (request.getConditionMethods() != null && !request.getConditionMethods().isEmpty()) {
+            try {
+                conditionMethodsJson = objectMapper.writeValueAsString(request.getConditionMethods());
+            } catch (Exception e) {
+                conditionMethodsJson = "[]";
+            }
+        }
+
         Interview interview = Interview.builder()
                 .userId(DEMO_USER_ID)
                 .companyName(request.getCompany())
                 .position(request.getRole())
                 .interviewDate(request.getInterviewDate())
                 .tension(tension)
+                .conditionMethods(conditionMethodsJson)
+                .satisfactionScore(request.getSatisfactionScore())
                 .memo(request.getMemo())
                 .build();
 

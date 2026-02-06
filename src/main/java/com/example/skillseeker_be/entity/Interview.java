@@ -35,6 +35,12 @@ public class Interview {
     @Column(length = 50)
     private String tension;
 
+    @Column(name = "condition_methods", columnDefinition = "JSON")
+    private String conditionMethods;
+
+    @Column(name = "satisfaction_score")
+    private Integer satisfactionScore;
+
     @Column(columnDefinition = "TEXT")
     private String memo;
 
@@ -49,13 +55,16 @@ public class Interview {
 
     @Builder
     public Interview(Long userId, String companyName, String position,
-                     LocalDate interviewDate, String tension, String memo) {
+                     LocalDate interviewDate, String tension, String memo,
+                     String conditionMethods, Integer satisfactionScore) {
         this.userId = userId;
         this.companyName = companyName;
         this.position = position;
         this.interviewDate = interviewDate;
         this.tension = tension;
         this.memo = memo;
+        this.conditionMethods = conditionMethods;
+        this.satisfactionScore = satisfactionScore;
     }
 
     public void addQuestion(InterviewQuestion question) {

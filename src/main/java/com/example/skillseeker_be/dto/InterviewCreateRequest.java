@@ -25,6 +25,8 @@ public class InterviewCreateRequest {
 
     private Integer atmosphereScore;
     private Integer tensionChangeScore;
+    private List<String> conditionMethods;
+    private Integer satisfactionScore;
     private String memo;
 
     @NotEmpty(message = "at least one question is required")
